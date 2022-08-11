@@ -34,3 +34,14 @@ promise_micro_task("micro 3")
 
 // node.js  v16.15.0
 // output:
+
+// 第一个出现
+// macro1-micro1
+// micro1-macro1-micro 1
+// micro 1
+// micro 2
+// micro 3
+// macro 1
+// macro 2
+// macro 3
+// micro1-macro1
