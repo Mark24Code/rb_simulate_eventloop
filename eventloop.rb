@@ -86,18 +86,18 @@ class EventLoop
       time = 0.1
     end
 
-    # 线程模拟存在问题
+    # 方案1: 用独立分散的线程模拟存在问题
     # 抢占的返回顺序不是固定的
     # t = Thread.new do
     #   sleep time
     #   @micro_queue.push(block)
     # end
-
     ## !!! 这里一定不能阻塞，一旦阻塞就不是单线程模型
     ## 有外循环控制不会结束
     # t.join
 
-    # 用单独线程来运算
+    # 方案2: 时间线程也需要单独模拟
+    # 建立一个时间任务
     @time_thr_task_queue.push({
       sleep_time: Time.now.to_i + time,
       job: -> () { @micro_queue.push(block) }
