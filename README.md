@@ -1,7 +1,9 @@
 # Ruby code simulate Eventloop
 
-use Ruby code simulate Eventloop
 
+## Run sample
+
+use Ruby code simulate Eventloop
 
 `ruby sample.rb`
 
@@ -18,7 +20,6 @@ simulate eventloop
 * micro_task
 * settimeout ( timer micro_task)
 * promise (micro_task)
-
 
 ## Eventloop Model
 
