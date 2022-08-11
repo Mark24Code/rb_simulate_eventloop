@@ -1,11 +1,8 @@
 require 'thread'
-
 class EventLoop
-  
   attr_accessor :macro_queue, :micro_queue
   def initialize
     @running = true
-    
     @macro_queue = Queue.new
     @micro_queue = Queue.new
 
@@ -13,24 +10,18 @@ class EventLoop
 
     @timer = Timer.new(@time_thr_task_queue, @macro_queue)
 
-    # 计时线程，是一个同步队列
-    # 会把定时任务结果塞回宏队列
+    # 计时线程，是一个同步队列，会把定时任务结果塞回宏队列
     @timer_thx = Thread.new do
       @timer.run
     end
   end
 
-
   def before_loop_sync_tasks
-    # do sth setting
     @first_task.call
   end
 
   def task(&block)
-    # 这里放置第一次同步任务
-    # 
-    # 外部书写的代码，模拟读取js
-    # 提供内部的api
+    # 这里放置第一次同步任务; 模拟js读取代码; instance_eval 提供上下文
     @first_task = -> () { instance_eval(&block) }
   end
 
@@ -55,13 +46,9 @@ class EventLoop
   def start
     begin
       before_loop_sync_tasks
-
       while @running
-
         macro_queue_works
-
         micro_queue_works
-
         # avoid CPU 100%
         sleep 0.1
       end
@@ -71,7 +58,6 @@ class EventLoop
   end
 
   # dsl public api
-  # inner api
   def macro_task(&block)
     @macro_queue.push(block)
   end
@@ -102,7 +88,6 @@ class EventLoop
       sleep_time: Time.now.to_i + time,
       job: -> () { @micro_queue.push(block) }
     })
-
   end
 end
 
